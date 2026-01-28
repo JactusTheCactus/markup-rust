@@ -1,0 +1,36 @@
+(* Constants *)
+	(* Single character *)
+		number = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+		letter = 'a' | 'b' | 'c' | 'd' | 'e' | 'f' | 'g' | 'h' | 'i' | 'j' | 'k' | 'l' | 'm' | 'n' | 'o' | 'p' | 'q' | 'r' | 's' | 't' | 'u' | 'v' | 'w' | 'x' | 'y' | 'z';
+		(* Character escaping *)
+			escaped = '\\', letter;
+		char = letter | number | escaped;
+		(* Whitespace *)
+			w = ' ' | '\t';
+		(* Beginning of a line *)
+			start =; (* Regex *)
+		(* End of a line *)
+			end =; (* Regex *)
+	(* Commands *)
+		cmd = "upper" | "lower" | "cap";
+	(* Entered text *)
+		text = {char | w};
+(* Styling *)
+	(* Bold *)
+		bold = '*', text, '*';
+	(* Italic *)
+		italic = '/', text, '/';
+	(* Underline *)
+		underline = '_', text, '_';
+	(* Code | Without '!', all text is escaped *)
+		code = ["<-", ['!'], language, '>'], '{', text, '}';
+	(* Header *)
+		header = start, '!', (1 | 2 | 3 | 4 | 5 | 6), w, {w}, text;
+	(* Ids & Classes *)
+		id_class = '<', ['#', id], {'.', class}, {w}, text, '>';
+	(* Blocks *)
+		pipe = '|', {w};
+		style = bold | italic | underline | code | header | id_class;
+		block = start, pipe+, (style | text), {start, pipe+, text};
+(* Command *)
+	command = '/', cmd, {':', [text]}, ';';
