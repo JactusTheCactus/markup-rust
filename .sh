@@ -23,7 +23,7 @@ for i in "${cargo[@]}"; do
 	fi
 done
 bin=target/debug/markup-rust
-chmod +x $bin
+chmod +x "$bin"
 if [[ $? == 0 ]]
 	then "./$bin" > index.html
 fi
