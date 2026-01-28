@@ -16,7 +16,7 @@ cargo=(
 )
 for i in "${cargo[@]}"; do
 	log="logs/$i.log"
-	cargo $i &> "$log"
+	cargo "$i" &> "$log"
 	if [[ $? != 0 ]]; then
 		code "$log"
 		break
