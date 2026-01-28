@@ -12,7 +12,6 @@ cargo=(
 	clippy
 	clean
 	check
-	# run
 	build
 )
 for i in "${cargo[@]}"; do
