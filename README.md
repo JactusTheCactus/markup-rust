@@ -4,7 +4,7 @@
 |:-:|:-:|
 |`Rust`|`HTML`|
 ## Features
-> `EBNF` Syntax can be found in [src/main.ebnf](src/main.ebnf).
+> `EBNF` Syntax can be found in [main.ebnf](src/main.ebnf).
 
 Every feature is inline, unless applied to a block.
 Inline `HTML` is not allowed & will not be read as `HTML`.
