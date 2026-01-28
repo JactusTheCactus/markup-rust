@@ -203,7 +203,7 @@ impl Parser {
 	}
 }
 fn main() {
-	let mut parser = Parser::new(tokenize("!6Header\nHello, World!"));
+	let mut parser = Parser::new(tokenize("!1Header\nHello, World!"));
 	parser.parse();
 	println!("{}", parser.eval());
 }
