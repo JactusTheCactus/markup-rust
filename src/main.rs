@@ -10,7 +10,7 @@ enum Token {
 	Hyphen,
 	LBrace,
 	RBrace,
-	Pound,
+	Hash,
 	Dot,
 	Pipe,
 	Colon,
@@ -84,7 +84,7 @@ fn tokenize(input: &str) -> Vec<Token> {
 				chars.next();
 			}
 			'#' => {
-				tokens.push(Token::Pound);
+				tokens.push(Token::Hash);
 				chars.next();
 			}
 			'.' => {
