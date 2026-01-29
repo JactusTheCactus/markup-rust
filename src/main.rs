@@ -97,7 +97,7 @@ fn main()
 				{
 					print!(" ");
 				},
-				Word | Symbol | Number =>
+				Word | Comma | Exclamation | Number =>
 				{
 					if !re_whitespace.is_match(&t)
 					{
