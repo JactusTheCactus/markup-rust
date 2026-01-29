@@ -25,10 +25,7 @@ Inline `HTML` is not allowed & will not be read as `HTML`.
 ```
 ### Code
 ```html
-<code
-	data-lang="LANGUAGE"
-	escaped
->CONTENT</code>
+<code data-lang="LANGUAGE" escaped>CONTENT</code>
 ```
 ### Header
 ```html
@@ -39,10 +36,7 @@ Element is a `<span>`, unless any other element can overwrite (`<span>` is a fal
 Only 1 `#id` is allowed; any others are ignored.
 There is no limit to the amount of `.classes`. They must each be prefixed by a `.`.
 ```html
-<span
-	id=ID
-	class=CLASSES
->CONTENT</span>
+<span id=ID class=CLASSES>CONTENT</span>
 ```
 ### Blocks
 Blocks allow features to be applied to a block of text, rather than inline.
