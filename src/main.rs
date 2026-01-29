@@ -29,7 +29,7 @@ fn main()
 			#[token("/")]
 			Slash,
 			#[token("\\")]
-			Backslash,
+			BackSlash,
 			#[token("\n")]
 			Newline,
 			#[token("*")]
@@ -41,9 +41,9 @@ fn main()
 			#[token("-")]
 			Hyphen,
 			#[token("{")]
-			LBrace,
+			LeftBrace,
 			#[token("}")]
-			RBrace,
+			RightBrace,
 			#[token("#")]
 			Hash,
 			#[token(".")]
@@ -55,19 +55,25 @@ fn main()
 			#[token(";")]
 			Semicolon,
 			#[token("<")]
-			LCaret,
+			LeftCaret,
 			#[token(">")]
-			RCaret,
-			#[regex(r"upper|lower|cap")]
-			Cmd,
+			RightCaret,
+			#[regex(r"/(?:upper|lower|cap)")]
+			Command,
 			#[regex(r"[a-zA-Z]+?")]
 			Word,
-			#[regex(r"[,!]")]
-			Symbol,
+			#[token("!")]
+			Exclamation,
+			#[token(",")]
+			Comma,
 			#[token("\t")]
 			Tab,
 			#[token(" ")]
 			Space,
+			#[token("'")]
+			SingleQuote,
+			#[token("\"")]
+			DoubleQuote
 		}
 		let mut lexer = Token0::lexer(test_string);
 		let re_token = Regex::new(r"Ok\((.*?)\)").unwrap();
