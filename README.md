@@ -25,7 +25,7 @@ Inline `HTML` is not allowed & will not be read as `HTML`.
 ```
 ### Code
 ```html
-<code data-lang="LANGUAGE" escaped>CONTENT</code>
+<code data-lang=LANGUAGE escaped>CONTENT</code>
 ```
 ### Header
 ```html
