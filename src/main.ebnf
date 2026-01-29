@@ -23,14 +23,14 @@
 	(* Underline *)
 		underline = '_', text, '_';
 	(* Code | Without '!', all text is escaped *)
-		code = ["<-", ['!'], language, '>'], '{', text, '}';
+		code = ["<-", '!'?, language, '>'], '{', text, '}';
 	(* Header *)
-		header = start, '!', (1 | 2 | 3 | 4 | 5 | 6), w, {w}, text;
+		header = start, '!', (1 | 2 | 3 | 4 | 5 | 6), w+, text;
 	(* Ids & Classes *)
-		id_class = '<', ['#', id], {'.', class}, {w}, text, '>';
+		id_class = '<', ['#', id], {'.', class}, w*, text, '>';
 	(* Blocks *)
-		pipe = '|', {w};
+		pipe = '|', w*;
 		style = bold | italic | underline | code | header | id_class;
 		block = start, pipe+, (style | text), {start, pipe+, text};
 (* Command *)
-	command = '/', cmd, {':', [text]}, ';';
+	command = '/', cmd, {':', text?}, ';';
