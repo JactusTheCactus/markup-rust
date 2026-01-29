@@ -2,7 +2,7 @@
 - [Logos Documentation](target/doc/logos/index.html)
   - [Codegen](target/doc/logos_codegen/index.html)
   - [Derive](target/doc/logos_derive/index.html)
-- [`EBNF` Syntax](src/main.ebnf).
+- [`EBNF` Syntax](src/main.ebnf)
 # Markup Language
 ## Languages
 |Written in|Output|
