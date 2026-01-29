@@ -37,7 +37,7 @@ fn main()
 			#[token("_")]
 			Underscore,
 			#[regex(r"![1-6]")]
-			Header, //(u8),
+			Header,
 			#[token("-")]
 			Hyphen,
 			#[token("{")]
