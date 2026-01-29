@@ -79,6 +79,7 @@ fn main()
 		let re_token = Regex::new(r"Ok\((.*?)\)").unwrap();
 		let re_slice = Regex::new(r"(.*?)").unwrap();
 		let re_whitespace = Regex::new(r"Space|Tab|Newline").unwrap();
+		use Token0::*;
 		while let Some(token) = lexer.next()
 		{
 			let token_string = format!("{:?}", token);
@@ -86,7 +87,6 @@ fn main()
 			let t = re_token.replace(&token_string, "$1");
 			let s = re_slice.replace(&slice_string, "$1");
 			let t_ = token.clone().ok().expect("Expected a Token0 :(");
-			use Token0::*;
 			match t_
 			{
 				Newline =>
