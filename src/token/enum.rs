@@ -1,4 +1,5 @@
-pub enum Token {
+pub enum Token
+{
 	Number(u8),
 	Slash,
 	Backslash,

@@ -5,7 +5,7 @@ flag() {
 		do [[ -e ".flags/$f" ]] || return 1
 	done
 }
-rm -rf logs
+rm -rf logs index.html
 mkdir -p logs
 cargo=(
 	fmt
@@ -15,16 +15,22 @@ cargo=(
 	build
 )
 for i in "${cargo[@]}"; do
+	cmd=($i)
+	case $i in
+		fmt)cmd=(+nightly ${cmd[@]});;
+		build)cmd+=(--release);; # Comment out for dev work
+	esac
 	log="logs/$i.log"
-	cargo "$i" &> "$log"
-	if [[ $? != 0 ]]; then
+	if ! cargo ${cmd[@]} &> "$log"; then
 		code "$log"
 		break
 	fi
 done
-bin=target/debug/markup-rust
-chmod +x "$bin"
-if [[ $? == 0 ]]
-	then "./$bin" > index.html
+project=markup-rust
+if [[ -f "target/debug/$project" ]]
+	then dir=debug
+	else dir=release
 fi
+bin=target/$dir/$project
+"./$bin" > index.html
 find . -empty -delete

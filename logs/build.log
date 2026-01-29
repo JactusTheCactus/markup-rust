@@ -1,2 +1,2 @@
    Compiling markup-rust v0.1.0 (/home/devin/Projects/markup-rust)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.13s
+    Finished `release` profile [optimized] target(s) in 0.21s
