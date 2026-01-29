@@ -36,7 +36,7 @@ fn main()
 			Star,
 			#[token("_")]
 			Underscore,
-			#[regex(r"![1-6]")]
+			#[regex(r"!([1-6])")]
 			Header,
 			#[token("-")]
 			Hyphen,
