@@ -1,125 +1,7 @@
-#[derive(Debug, Clone, PartialEq)]
-enum Token {
-	Number(u8),
-	Slash,
-	Backslash,
-	Newline,
-	Star,
-	Underscore,
-	Exclamation,
-	Hyphen,
-	LBrace,
-	RBrace,
-	Hash,
-	Dot,
-	Pipe,
-	Colon,
-	Semicolon,
-	LCaret,
-	RCaret,
-	Text(char),
-	Eof,
-}
-impl Token {
-	fn as_char(&self) -> Option<char> {
-		match self {
-			Token::Text(c) => Some(*c),
-			_ => None,
-		}
-	}
-	fn as_num(&self) -> Option<u8> {
-		match self {
-			Token::Number(c) => Some(*c),
-			_ => None,
-		}
-	}
-}
-fn tokenize(input: &str) -> Vec<Token> {
-	let mut tokens = Vec::new();
-	let mut chars = input.chars().peekable();
-	while let Some(&c) = chars.peek() {
-		match c {
-			'0'..='9' => {
-				let mut num = 0;
-				while let Some(d @ '0'..='9') = chars.peek() {
-					num = num * 10 + (d.to_digit(10).unwrap() as u8);
-					chars.next();
-				}
-				tokens.push(Token::Number(num));
-			}
-			'\\' => {
-				tokens.push(Token::Backslash);
-				chars.next();
-			}
-			'\n' => {
-				tokens.push(Token::Newline);
-				chars.next();
-			}
-			'*' => {
-				tokens.push(Token::Star);
-				chars.next();
-			}
-			'/' => {
-				tokens.push(Token::Slash);
-				chars.next();
-			}
-			'_' => {
-				tokens.push(Token::Underscore);
-				chars.next();
-			}
-			'!' => {
-				tokens.push(Token::Exclamation);
-				chars.next();
-			}
-			'-' => {
-				tokens.push(Token::Hyphen);
-				chars.next();
-			}
-			'{' => {
-				tokens.push(Token::LBrace);
-				chars.next();
-			}
-			'}' => {
-				tokens.push(Token::RBrace);
-				chars.next();
-			}
-			'#' => {
-				tokens.push(Token::Hash);
-				chars.next();
-			}
-			'.' => {
-				tokens.push(Token::Dot);
-				chars.next();
-			}
-			':' => {
-				tokens.push(Token::Colon);
-				chars.next();
-			}
-			';' => {
-				tokens.push(Token::Semicolon);
-				chars.next();
-			}
-			'<' => {
-				tokens.push(Token::LCaret);
-				chars.next();
-			}
-			'>' => {
-				tokens.push(Token::RCaret);
-				chars.next();
-			}
-			'|' => {
-				tokens.push(Token::Pipe);
-				chars.next();
-			}
-			_ => {
-				tokens.push(Token::Text(c));
-				chars.next();
-			}
-		}
-	}
-	tokens.push(Token::Eof);
-	tokens
-}
+mod token;
+use token::r#enum::Token;
+use token::r#enum::Token::*;
+use token::tokenise::tokenise;
 struct Parser {
 	tokens: Vec<Token>,
 	current: usize,
@@ -134,7 +16,7 @@ impl Parser {
 		}
 	}
 	fn is_at_end(&self) -> bool {
-		matches!(self.peek(), Token::Eof)
+		matches!(self.peek(), Eof)
 	}
 	fn peek(&self) -> &Token {
 		&self.tokens[self.current]
@@ -153,42 +35,56 @@ impl Parser {
 	}
 	fn eval(&mut self) -> String {
 		let mut html = "".to_string();
-		let mut italic = false;
-		let mut bold = false;
-		let mut underline = false;
-		let mut header = false;
-		let mut header_level: u8 = 0;
+		struct Header {
+			on: bool,
+			level: u8,
+		}
+		struct Style {
+			italic: bool,
+			bold: bool,
+			underline: bool,
+			header: Header,
+		}
+		let mut style = Style {
+			italic: false,
+			bold: false,
+			underline: false,
+			header: Header {
+				on: false,
+				level: 0,
+			},
+		};
 		for i in &self.tokens {
 			match i {
-				Token::Slash => {
-					html += &format!("<{}i>", if italic { "" } else { "/" });
-					italic = !italic;
+				Slash => {
+					html += &format!("<{}i>", if style.italic { "" } else { "/" });
+					style.italic = !style.italic;
 				}
-				Token::Star => {
-					html += &format!("<{}b>", if bold { "" } else { "*" });
-					bold = !bold;
+				Star => {
+					html += &format!("<{}b>", if style.bold { "" } else { "*" });
+					style.bold = !style.bold;
 				}
-				Token::Underscore => {
-					html += &format!("<{}u>", if underline { "" } else { "_" });
-					underline = !underline;
+				Underscore => {
+					html += &format!("<{}u>", if style.underline { "" } else { "_" });
+					style.underline = !style.underline;
 				}
-				Token::Exclamation => {
-					if !header {
-						header = true;
+				Exclamation => {
+					if !style.header.on {
+						style.header.on = true;
 					}
 				}
-				Token::Newline | Token::Eof => {
-					if header {
-						html += &format!("</h{header_level}>");
-						header = false;
+				Newline | Eof => {
+					if style.header.on {
+						html += &format!("</h{}>", style.header.level);
+						style.header.on = false;
 					}
 				}
 				_ => {
 					if let Some(c) = i.as_char() {
 						html.push(c);
 					} else if let Some(c) = i.as_num() {
-						if header && (1..=6).contains(&c) {
-							header_level = c;
+						if style.header.on && (1..=6).contains(&c) {
+							style.header.level = c;
 							html += &format!("<h{c}>")
 						} else {
 							html.push_str(&c.to_string())
@@ -203,7 +99,7 @@ impl Parser {
 	}
 }
 fn main() {
-	let mut parser = Parser::new(tokenize("!1Header\nHello, World!"));
+	let mut parser = Parser::new(tokenise("!1Header\nHello, World!"));
 	parser.parse();
 	println!("{}", parser.eval());
 }
