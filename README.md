@@ -1,11 +1,15 @@
+# Important links
+- [Logos Documentation](target/doc/logos/ind
+	#[regex(r"[a-zA-Z]")]ex.html)
+  - [Codegen](target/doc/logos_codegen/index.html)
+  - [Derive](target/doc/logos_derive/index.html)
+- [`EBNF` Syntax](src/main.ebnf).
 # Markup Language
 ## Languages
 |Written in|Output|
 |:-:|:-:|
 |`Rust`|`HTML`|
 ## Features
-> `EBNF` Syntax can be found in [main.ebnf](src/main.ebnf).
-
 Every feature is inline, unless applied to a block.
 Inline `HTML` is not allowed & will not be read as `HTML`.
 ### Bold

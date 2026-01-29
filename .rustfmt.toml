@@ -11,7 +11,6 @@ fn_single_line = true
 force_multiline_blocks = true
 format_strings = true
 hex_literal_case = "Upper"
-float_literal_trailing_zero = "IfNoPostfix"
 match_block_trailing_comma = true
 max_width = 80
 normalize_comments = true
