@@ -1,27 +1,14 @@
     Checking markup-rust v0.1.0 (/home/devin/Projects/markup-rust)
-warning: called `ok().expect()` on a `Result` value
-  --> src/main.rs:82:13
-   |
-82 |             let t_ = token.clone().ok().expect("Expected a Token0 :(");
-   |                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-   |
-   = help: you can call `expect()` directly on the `Result`
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#ok_expect
-   = note: `#[warn(clippy::ok_expect)]` on by default
+warning: importing legacy numeric constants
+ --> src/main.rs:1:49
+  |
+1 | use ::{ logos::Logos, regex::Regex, std::{ env, u8 } };
+  |                                                 ^^
+  |
+  = help: remove this import
+  = note: then `u8::<CONST>` will resolve to the respective associated constant
+  = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#legacy_numeric_constants
+  = note: `#[warn(clippy::legacy_numeric_constants)]` on by default
 
-warning: using `print!()` with a format string that ends in a single newline
-  --> src/main.rs:88:6
-   |
-88 |                     print!("\n");
-   |                     ^^^^^^^^^^^^
-   |
-   = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#print_with_newline
-   = note: `#[warn(clippy::print_with_newline)]` on by default
-help: use `println!` instead
-   |
-88 -                     print!("\n");
-88 +                     println!();
-   |
-
-warning: `markup-rust` (bin "markup-rust") generated 2 warnings (run `cargo clippy --fix --bin "markup-rust"` to apply 1 suggestion)
-    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.35s
+warning: `markup-rust` (bin "markup-rust") generated 1 warning
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.45s

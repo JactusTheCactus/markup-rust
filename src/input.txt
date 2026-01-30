@@ -1,0 +1,4 @@
+!1<"Header">
+#1 Hello, World!
+<-!js>{console.log("Escaped!");}
+<-js>{console.log("Not Escaped!");}

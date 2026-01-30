@@ -5,22 +5,13 @@ flag() {
 		do [[ -e ".flags/$f" ]] || return 1
 	done
 }
-clean() {
-	rm -rf logs index.html
-	mkdir -p logs
-}
 build() {
-	cargo_k=(
-		fmt
-		clippy
-		check
-		build
+	cargo_k=(clippy check build)
+	declare -A cargo_v=(
+		[clippy]=clippy
+		[check]=check
+		[build]=build
 	)
-	declare -A cargo_v=()
-	cargo_v[fmt]='+nightly fmt'
-	cargo_v[clippy]=clippy
-	cargo_v[check]=check
-	cargo_v[build]=build
 	for i in "${cargo_k[@]}"; do
 		log="logs/$i.log"
 		# shellcheck disable=SC2086
@@ -28,19 +19,22 @@ build() {
 			code "$log"
 			break
 		fi
+		if [[ -f "$log" && $(wc -l < "$log") -le 2 ]]; then
+			rm "$log"
+		fi
 	done
 }
-check() {
-	shellcheck .sh
-}
-if [[ $(check) == '' ]]
-	# then if cargo clean
-		then if clean
-			then if build
-				then ./target/debug/markup-rust > index.html
-			fi
-		fi
-	# fi
-	else check
+rm -rf logs index.html
+mkdir -p logs
+CHECK=$(mktemp)
+shellcheck --color=always .sh &> "$CHECK"
+if [[ $(<"$CHECK") == '' ]]; then
+	if build &>> logs/build.log; then
+		./target/debug/markup-rust \
+			"$(<src/input.txt)" \
+			> index.html \
+			2> logs/main.log
+	fi
+	else cat "$CHECK"
 fi
 find . -empty -delete
